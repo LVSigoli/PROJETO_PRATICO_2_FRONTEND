@@ -1,10 +1,13 @@
+version: "3.9"
+
 services:
-  node:
+  backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
+    working_dir: /usr/src/app
     volumes:
-      - ./:/usr/src/app
+      - ./backend:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - "3000:3000"
@@ -14,11 +17,29 @@ services:
     depends_on:
       - database
 
-  database:
-    image: postgres:18
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    working_dir: /usr/src/app
     volumes:
-      - db_data:/var/lib/postgresql
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "5174:5174"
+    environment:
+      - PORT=5174
+    command: ["npm", "start"]
+    depends_on:
+      - backend
+
+  database:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=usuario
       - POSTGRES_PASSWORD=senha
