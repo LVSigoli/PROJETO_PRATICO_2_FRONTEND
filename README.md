@@ -1,83 +1,120 @@
-API Oficina Mecânica 🚗🔧
-Este projeto é um backend RESTful para um sistema de gerenciamento de Oficina Mecânica. A aplicação utiliza Node.js, Express e PostgreSQL, é totalmente containerizada com Docker e possui documentação completa gerada via Swagger.
+# 🚀 Projeto Fullstack --- Backend + Frontend + Docker + PostgreSQL
 
-Sobre o Projeto
-O objetivo deste projeto foi implementar uma API com rotas CRUD completas que atende aos seguintes requisitos:
+Este repositório contém uma aplicação Fullstack composta por:
 
-Relacionamento N:N (Muitos-para-Muitos): Implementado entre OrdensServico e Pecas (através da tabela itens_peca).
+- **Backend** (Node.js + Express)\
+- **Frontend** (React)\
+- **Banco de dados** (PostgreSQL)\
+- **Ambiente Docker** para subir os três serviços de forma integrada
 
-Relacionamento 1:N (Um-para-Muitos): Implementado entre Clientes e Veiculos.
+## 📦 Estrutura de Pastas
 
-Documentação Completa: 100% dos endpoints estão documentados no Swagger, incluindo schemas de request e response (sucesso e erro).
+    ├── backend/
+    │   ├── src/
+    │   ├── package.json
+    │   ├── Dockerfile
+    │   └── ...
+    │
+    ├── frontend/
+    │   ├── src/
+    │   ├── package.json
+    │   ├── Dockerfile
+    │   └── ...
+    │
+    ├── sql/
+    │   └── init.sql
+    │
+    ├── .env.docker
+    ├── docker-compose.yml
+    └── README.md
 
-Entidades da API
-A API expõe rotas CRUD (GET, POST, PUT, DELETE) para as seguintes entidades:
+## 🐳 Como funciona o Docker neste projeto
 
-Clientes: Gerenciamento de dados dos clientes.
+O `docker-compose.yml` levanta 3 containers:
 
-Veiculos: Gerenciamento dos veículos, onde cada veículo pertence a um cliente (1:N).
+### **1️⃣ Backend**
 
-Mecanicos: Gerenciamento dos mecânicos da oficina.
+- Porta exposta: **3000**\
+- URL: `http://localhost:3000`
 
-Pecas: Gerenciamento de peças e estoque.
+### **2️⃣ Frontend**
 
-OrdensServico: Gerenciamento das Ordens de Serviço, que conecta todas as entidades e implementa a lógica N:N com Peças.
+- Porta configurável via `.env.docker`\
+- Padrão: **5174**\
+- URL: `http://localhost:5174`
 
-Estrutura do Projeto
-A estrutura de ficheiros foi adaptada do template original para suportar as entidades da oficina:
+### **3️⃣ PostgreSQL**
 
-api-oficina-mecanica/
-├── src
-│ ├── index.js # Ponto de entrada, carrega as rotas e o Swagger
-│ ├── db.js # Configuração da conexão com o PostgreSQL (inclui pool e transações)
-│ ├── swagger.js # Configuração central do swagger-jsdoc (definição de Schemas e Tags)
-│ └── routes
-│ ├── clientes.js # Rotas CRUD para /clientes
-│ ├── veiculos.js # Rotas CRUD para /veiculos
-│ ├── mecanicos.js # Rotas CRUD para /mecanicos
-│ ├── pecas.js # Rotas CRUD para /pecas
-│ └── ordensServico.js # Rotas CRUD para /ordens-servico (Implementa N:N)
-├── sql
-│ └── init.sql # Script de criação das tabelas da oficina (executado automaticamente pelo Docker)
-├── Dockerfile # Instruções para construir a imagem Docker do Node.js
-├── docker-compose.yml # Configuração dos serviços 'node' (API) e 'database' (PostgreSQL)
-├── .gitignore # Arquivos a serem ignorados pelo Git
-├── package.json # Configuração do npm e dependências
-└── README.md # Esta documentação
-Pré-requisitos
-Docker
+- Porta interna: **5432**\
+- Dados persistidos via volume\
+- Executa scripts de `/sql`
 
-Docker Compose
+## ⚙️ Variáveis de Ambiente
 
-Instalação e Execução
-Clone o repositório (substitua pela URL do seu repositório, se aplicável):
+Criar arquivo:
 
-git clone https://github.com/Trojahn/express_template_docker.git
-cd express_template_docker
-Inicie a aplicação com Docker Compose:
+### `.env.docker`
 
-docker compose up --build
-Na primeira vez que executar, o Docker irá:
+```bash
+PORT=5174
+```
 
-Construir a imagem da API (node).
+## 🧰 Como subir o projeto
 
-Baixar a imagem do postgres.
+```bash
+docker-compose up --build
+```
 
-Criar o banco de dados (bancodados).
+Modo daemon:
 
-Executar o script sql/init.sql para criar todas as tabelas e inserir os dados de exemplo.
+```bash
+docker-compose up -d
+```
 
-Para resetar o banco de dados (apagar todos os dados e recomeçar do zero), execute:
+Parar:
 
-docker compose down -v
-docker compose up --build
-(A flag -v remove os volumes, forçando o init.sql a ser executado novamente).
+```bash
+docker-compose down
+```
 
-Uso e Testes
-A API e sua documentação estarão disponíveis localmente:
+Reset banco:
 
-URL Base da API: http://localhost:3000
+```bash
+docker-compose down -v
+```
 
-Documentação Swagger (UI): http://localhost:3000/api
+## 📂 Acessos
 
-A forma recomendada de testar é através da interface do Swagger, que permite executar todas as rotas CRUD diretamente pelo navegador, ou utilizando ferramentas como o Postman.
+Serviço URL
+
+---
+
+Backend http://localhost:3000
+Frontend http://localhost:5174
+PostgreSQL localhost:5432
+
+## 🛠️ Desenvolvimento sem Docker
+
+Backend:
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+## ✔️ Conclusão
+
+Docker unifica backend, frontend e banco com um comando:
+
+```bash
+docker-compose up --build
+```
