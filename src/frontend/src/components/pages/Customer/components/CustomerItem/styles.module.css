@@ -1,0 +1,62 @@
+.container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+  padding: 1.5rem 1rem;
+
+  border-radius: 0.5rem;
+  border: 1px solid lightgray;
+}
+
+.text {
+  gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  flex-wrap: wrap;
+}
+
+.information-wrapper {
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: row;
+  align-items: center;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.edit {
+  width: 100%;
+  max-width: 4rem;
+
+  padding: 0.75rem;
+
+  color: white;
+  background-color: green;
+
+  border: none;
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+.delete {
+  width: 100%;
+  max-width: 5rem;
+
+  padding: 0.75rem;
+
+  color: white;
+  background-color: red;
+
+  border: none;
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
